@@ -1,410 +1,79 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!--
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at http://mozilla.org/MPL/2.0/
- *
- * Copyright (C) 2007-2016, Peter Johnson (www.delphidabbler.com).
- *
- * Read-me file for Hot Label Component
--->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+# Hot Label Component
 
-<head>
+## Description
 
-  <title>
-    DelphiDabbler.com Hot Label Component ReadMe
-  </title>
+_TPJHotLabel_ is a simple Delphi component that descends from _TLabel_. It provides a clickable label that can start the default browser or email client to access a specific URL. Key features of the component are:
 
-  <style type="text/css">
-    body {
-      margin: 1em;
-      padding: 0;
-      font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-      font-size: 9pt;
-      line-height: 150%;
-    }
-    h1 {
-      margin: 0 0 1em 0;
-      padding: 0.5em;
-      border: 1px silver solid;
-      background-color: #eee;
-      font-size: 13pt;
-      font-weight: bold;
-      text-align: center;
-    }
-    h1 .subtitle {
-      font-style: italic;
-      color: #336;
-    }
-    h2 {
-      margin: 1em 0 0 0;
-      padding: 0;
-      padding-bottom: 6px;
-      border-bottom: 1px silver solid;
-      font-size: 11pt;
-      font-weight: bold;
-    }
-    h3 {
-      margin: 0.5em 0 0 0;
-      padding: 0;
-      font-size: 9pt;
-      font-weight: bold;
-    }
-    p {
-      margin: 0.5em 0 0 0;
-      padding: 0;
-    }
-    ul, ol {
-      margin: 0.5em 0 0 3em;
-      padding: 0;
-    }
-    ul {
-      list-style-type: square;
-    }
-    ol ul, ul ul {
-      list-style-type: circle;
-    }
-    ol ol {
-      list-style-type: lower-alpha;
-    }
-    ul.spaced li,
-    ol.spaced li {
-      margin-top: 0.5em;
-    }
-    ul.spaced li,
-    ol.spaced li {
-      margin-top: 0.5em;
-    }
-    ul.unspaced li,
-    ol.unspaced li {
-      margin-top: 0;
-    }
-    ul.unspaced li.first,
-    ol.unspaced li.first {
-      margin-top: 0.5em;
-    }
-    code {
-      font-family: "Courier New", Courier, monospace;
-    }
-    a:link {
-      color: #336;
-      text-decoration: underline;
-    }
-    a:visited {
-      color: #669;
-      text-decoration: underline;
-    }
-    a:active {
-      color: #336;
-      text-decoration: underline;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .gototop {
-      margin: 1em 0 0 0;
-      padding: 0.3em 0 0 0;
-      text-align: center;
-      position: relative;
-      float: right;
-      font-weight: bold;
-    }
-    .pullout {
-      border-left: 8px silver solid;
-      background-color: #eee;
-      margin: 0.5em 0 0 0;
-      padding: 0.25em 0.5em;
-      font-style: italic;
-    }
-    .indent {
-      margin-left: 3em;
-    }
-    .highlight {
-      color: #336;
-      font-style: italic;
-      font-weight: bold;
-    }
-    .endnotes {
-      margin: 1.5em 0 0 0;
-      padding: 1em 0 0 0;
-      border-top: 1px silver solid;
-    }
-    .comments {
-      font-style: italic;
-    }
-    .copyright,
-    .copyright a:link,
-    .copyright a:visited,
-    .copyright a:active {
-      margin: 1em 0 0 0;
-      color: gray;
-      font-size: 8pt;
-      text-align: right;
-    }
-  </style>
+* All properties of _TLabel_ are supported, although the usage and default values of some of the inherited properties have been changed.
+* The _URL_ property is used for storing the URL to be accessed when the label is clicked and the _Caption_ property can either store descriptive text or can reflect the URL, depending on the value of the _CaptionIsURL_ property. The ability to link the caption and URL makes it easy to display the URL without having to keep two properties synchronised.
+* The URL can be validated to check for supported protocols. This validation is switched on and off using the _ValidateURL_ property. Supported protocols are:
+  * `http://`
+  * `https://`
+  * `mailto:`
+  * `file:`
+  * `ftp://`
+* The label's _Font_ property defaults to navy blue to indicate a link.
+* The label can be highlighted when the mouse passes over it. Highlighting is used if the _HighlightURL_ property is True, and the font used for highlighting is set using the _HighlightFont_ property.
+* The label can also display in a different style when its "link" has been clicked successfully. The font to be used is specified via the _VistedFont_ property. The user can switch the visited state on and off via the _Visited_ property or the component can be enabled to track visits automatically using the _TrackVisits_ property.
+* The label displays the "hand point" cursor by default.
+* The component's pop-up hints can be customised as follows, using the _HintStyle_ property:
+  * the hint text can come from the _Hint_ property as normal, _or_
+  * the hint text can come from the URL property with the _Hint_ property being ignored, _or_
+  * the hint text can be modified just before the hint is shown by handling the _OnCustomHint_ event, which is useful for displaying dynamic information in the hint.
 
-</head>
+## Compatibility
 
-<body>
+Release v2.2.0 was tested with all native 32 bit Windows Delphi compilers from Delphi 7 through to XE4, excluding Delphi 2005. It was also tested with the 64 bit compiler of Delphi XE2 through to XE4.
 
-<h1>
-  <div>Hot Label Component</div>
-  <div class="subtitle">ReadMe</div>
-</h1>
+Release v2.2.1, which was just a simple bug fix, was tested only with Delphi 10 Seattle's Win32 personality, but should still work with Delphi 7 and later, along with 64 bit Windows targets.
 
-<h2>
-  Description
-</h2>
+It is possible that the component will also compile with Delphi 4, 5 and 6, but this has not been tested for a long time.
 
-<p>
-  <var>TPJHotLabel</var> is a simple Delphi component that descends from
-  <var>TLabel</var>. It provides a click-able label that can start the default
-  browser or email client to access a specific URL. Key features of the
-  component are:
-</p>
+This is a VCL component and so is not compatible with the FireMonkey framework.
 
-<ul class="spaced">
-  <li>
-    All properties of <var>TLabel</var> are supported, although the usage and
-    default values of some of the inherited properties have been changed.
-  </li>
-  <li>
-    The <var>URL</var> property is used for storing the URL to be accessed when
-    the label is clicked and the <var>Caption</var> property can either store
-    descriptive text or can reflect the URL, depending on the value of the
-    <var>CaptionIsURL</var> property. The ability to link the Caption and URL
-    makes it easy to display the URL without having to keep two properties
-    synchronised.
-  </li>
-  <li>
-    The URL can be validated to check for supported protocols. This validation
-    is switched on and off using the <var>ValidateURL</var> property. Supported
-    protocols are:
-    <ul class="unspaced">
-      <li><code>http://</code></li>
-      <li><code>https://</code></li>
-      <li><code>mailto:</code></li>
-      <li><code>file:</code></li>
-      <li><code>ftp://</code></li>
-    </ul>
-  </li>
-  <li>
-    The label's <var>Font</var> property defaults to a navy blue to indicate a
-    link.
-  </li>
-  <li>
-    The label can be highlighted when the mouse passes over it. Highlighting is
-    used if the <var>HighlightURL</var> property is True, and the font used for
-    highlighting is set using the <var>HighlightFont</var> property.
-  </li>
-  <li>
-    The label can also display in a different style when its &quot;link&quot;
-    has been clicked successfully. The font to be used is specified via the
-    <var>VistedFont</var> property. The user can switch the visited state on and
-    off via the <var>Visited</var> property or the component can be enabled to
-    track visits automatically using the <var>TrackVisits</var> property.
-  </li>
-  <li>
-    The label displays the &quot;hand point&quot; cursor by default.
-  </li>
-  <li>
-    The component's pop-up hints can be customised as follows, using the
-    <var>HintStyle</var> property:
-    <ul class="unspaced">
-      <li>
-        the hint text can come from the <var>Hint</var> property as normal,
-        <br />
-        &nbsp;&nbsp;<em>or</em>
-      </li>
-      <li>
-        the hint text can come from the <var>URL</var> property with the
-        <var>Hint</var> property being ignored,<br />
-        &nbsp;&nbsp;<em>or</em>
-      </li>
-      <li>
-        the hint text can be modified just before the hint is shown by handling
-        the <var>OnCustomHint</var> event, which is useful for displaying
-        dynamic information in the hint.
-      </li>
-    </ul>
-  </li>
-</ul>
+## Installation
 
-<p>
-  <var>TPJHotLabel</var> should work with Delphi versions 4 to 2010. .NET
-  versions of Delphi are not supported.
-</p>
+The _Hot Label Component_ unit and accompanying files are supplied in a zip file. Before installing you need to extract the files, preserving the directory structure. The following files will be extracted:
 
-<h2>
-  Compatibility
-</h2>
+* **`PJHotLabel.pas`** – Component source code.
+* **`PJHotLabel.dcr`** – Component palette glyph.
+* `README.md` – This read-me file.
+* `CHANGELOG.md` – The project change log.
+* `MPL-2.txt` – The Mozilla Public License v2.0.
+* `Documentation.url` – Short-cut to the component's online documentation.
 
-<p>
-  Release v2.2.0 was tested with all native 32 bit Windows Delphi compilers from
-  Delphi 7 through to XE4, excluding Delphi 2005. It was also tested with the
-  64 bit compiler of Delphi XE2 through to XE4.
-</p>
+In addition to the above files you will find the source code of the [demo project](#demo-program) in the `Demo` sub-directory.
 
-<p>
-  Releaae v2.2.1, which was just a simple bug fix, was tested only with Delphi
-  10 Seattle's Win32 personality, but should still work with Delphi 7 and later,
-  along with 64 bit Windows targets.
-</p>
+You can now install the components into the Delphi IDE. To do this, the files `PJHotLabel.pas` and `PJHotLabel.dcr` should be added to a design time package. If you need help doing this [see here](https://delphidabbler.com/url/install-comp).
 
-<p>
-  It is possible that the component will also compile with Delphi 4, 5 and 6,
-  but this has not been tested for a long time.
-</p>
+## Documentation
 
-<p>
-  This is a VCL component and so is not compatible with the FireMonkey
-  framework.
-</p>
+The component is fully documented [online](https://delphidabbler.com/url/hotlabel-docs).
 
-<h2>
-  Installation
-</h2>
+## Demo Program
 
-<p>
-  The <em>Hot Label Component</em> unit and accompanying files are supplied in a
-  zip file. Before installing you need to extract the files, preserving the
-  directory structure. The following files will be extracted:
-</p>
+Source code for a program that demonstrates the component is included in the download. Most of the demo's functionality depends on the properties of the various hot label components it uses – there is very little code.
 
-<ul>
-  <li>
-    <strong><code>PJHotLabel.pas</code></strong> &ndash; Component source code.
-  </li>
-  <li>
-    <strong><code>PJHotLabel.dcr</code></strong> &ndash; Component palette
-    glyph.
-  </li>
-  <li>
-    <code>ReadMe.htm</code> &ndash; This read-me file.
-  </li>
-  <li>
-    <code>ChangeLog.txt</code> &ndash; The project change log.
-  </li>
-  <li>
-    <code>MPL-2.txt</code> &ndash; The Mozilla Public License v2.0.
-  </li>
-  <li>
-    <code>Documentation.url</code> &ndash; Short-cut to the component's online
-    documentation.
-  </li>
-</ul>
+The demo requires Delphi 7 or later.
 
-<p>
-  In addition to the above files you will find the source code of the demo
-  project the <code>Demo</code> sub-directory.
-</p>
+## Update History
 
-<p>
-  You can now install the components into the Delphi IDE. To do this, the files
-  <code>PJHotLabel.pas</code> and <code>PJHotLabel.dcr</code> should be added to
-  a design time package. If you need help doing this <a
-    href="http://www.delphidabbler.com/url/install-comp"
-  >see here</a>.
-</p>
+A complete change log is provided in [`CHANGELOG.md`](https://github.com/ddablib/hotlabel/blob/main/CHANGELOG.md) that is included in the download.
 
-<h2>
-  Documentation
-</h2>
+## License
 
-<p>
-  The component is fully documented <a
-    href="http://delphidabbler.com/url/hotlabel-docs"
-  >online</a>.
-</p>
+The _Hot Label Component_ is released under the terms of the [Mozilla Public License v2.0](https://www.mozilla.org/MPL/2.0/).
 
-<h2>
-  Demo Program
-</h2>
+All relevant trademarks are acknowledged.
 
-<p>
-  Source code for a program that demonstrates the component is included in the
-  download. Most of the demo's functionality depends on the properties of the
-  various hot label components it uses &ndash; there is very little code.
-</p>
+## Bugs and Feature Requests
 
-<p>
-  The demo requires Delphi 7 or later.
-</p>
+Bugs can be reported or new features requested via the project's [Issue Tracker](https://github.com/ddablib/hotlabel/issues). A GitHub account is required.
 
-<h2>
-  Update History
-</h2>
+Please check if an issue has already been created for a similar report or request. If so then please add a comment containing as much information as you can to the existing issue, or if you've nothing to add, just add a :+1: (`:+1:`) comment. If there is no suitable existing issue then please add a new issue and give as much information as possible.
 
-<p>
-  A complete change log is provided in a text file that is included in the
-  download.
-</p>
+## About the Author
 
-<h2>
-  License
-</h2>
+I'm Peter Johnson – a hobbyist programmer living in Ceredigion in West Wales, UK, writing mainly in Delphi. My programs and other library code are available from: [https://delphidabbler.com/](https://delphidabbler.com/).
 
-<p>
-  The <em>Hot Label Component</em> is released under the terms of the <a
-    href="http://www.mozilla.org/MPL/2.0/"
-  >Mozilla Public License v2.0</a>.
-</p>
-
-<p>
-  All relevant trademarks are acknowledged.
-</p>
-
-<h2>
-  Bugs and Feature Requests
-</h2>
-
-<p>
-  Bugs can be reported or new features requested via the <a
-    href="http://www.delphidabbler.com/url/ddlib-issues"
-  >Issue Tracker</a>.
-</p>
-
-<p>
-  If no similar report or request has been recorded already, use the <em>New
-  Issue</em> link to add a new issue. Please select the most appropriate
-  template from the <em>Templates</em> drop down list.
-</p>
-
-<h2>
-  About the Author
-</h2>
-
-<p>
-  I'm Peter Johnson &ndash; a hobbyist programmer living in Ceredigion in West
-  Wales, UK, writing write mainly in Delphi. My programs and code are available
-  from <a
-    href="http://www.delphidabbler.com/"
-  >http://www.delphidabbler.com/</a>.
-</p>
-
-<p>
-  I can be <a
-    href="http://www.delphidabbler.com/contact"
-  >contacted via the website</a>.
-</p>
-
-
-<div class="endnotes">
-  <div class="comments">
-    Please <a
-      href="http://www.delphidabbler.com/contact"
-    >let me know</a> if you have any comments about the component, but please
-    use the Issue Tracker noted above to report bugs and request new features.
-  </div>
-  <div class="copyright">
-    This document is copyright &copy; 2007-2014, P D Johnson, <a
-      href="http://www.delphidabbler.com/"
-    >www.delphidabbler.com</a>.
-  </div>
-</div>
-
-</body>
-
-</html>
+This document is copyright © 2007-2022, [P D Johnson](https://gravatar.com/delphidabbler).
