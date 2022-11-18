@@ -324,7 +324,7 @@ uses
 
 const
   // URL used as default caption property by SetDefaultURL method
-  cDefaultURL = 'http://example.com/';
+  cDefaultURL = 'https://example.com/';
 
 
 // Message strings
